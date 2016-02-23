@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% for post in posts %}
+<div class='post'>
+	<div class='post-topper'>
+		{% if post.image %}
+		<div class='post-image' style='text-align:center'>
+			<img src="{{post.image}}" alt="{{post.title}}">
+		</div>
+		{% endif %}
+		<div class='post-header'>
+			<a href="/posts/{{post.date.year}}/{{post.date.month}}/{{post.date.day}}/{{post.title.replace(' ','_')}}">{{post.title}}</a>
+		</div>
+	</div>
+	<div class = 'post-body'>
+		<p>{{post.notes|safe}}</p>
+	</div>
+	{% if post.audio_file_location %}
+	<div class = 'audio-player'>
+		<audio src={{post.audio_file_location}} preload='none' type='audio/mp3' style='width:100%'>
+		</audio>
+		<div class='download-link'>
+			<a href={{post.audio_file_location}}>download mp3</a>
+		</div>
+	</div>
+	{% endif %}
+	<div class = 'row post-footer'>
+		<div class = 'span6'>
+			{%if post.music %}
+			Music by: | {% for music in post.music %} <a href='http://{{music.website}}'>{{music.artist}}</a> | {% endfor %}
+			{% endif %}
+		</div>
+		<div class = 'faded-text span2'>
+			<div style='float:right'>{{post.date.year}}-{{post.date.month}}-{{post.date.day}}</div>
+		</div>
+	</div>
+	<hr>
+</div>
+{% endfor %}
+{% if current_page %}
+<div class='post' style='text-align:center'>
+	Page:
+	{% if current_page != 1 %}
+		<a href='/posts?page=1'> 1 </a>
+	{% else %}
+		1
+	{% endif %}
+	{% for number in range(2,numpages+1) %}
+		{% if number < 3 or number in range(current_page - 1, current_page + 2) or number > numpages - 2 %}
+			| 
+			{% if number == current_page %}
+				 {{number}}
+			{% else %}
+				<a href='/posts?page={{number}}'> {{number}} </a>
+			{% endif %}
+		{% else %}
+			{% if number == 3 or number == current_page + 2 %} | {%endif%}
+			<a href='/posts?page={{number}}' class = 'link_dot'>.</a>
+		{% endif %}
+	{% endfor %}
+</div>
+{% endif %}
+
+<script>
+$( function() {
+  var num;
+  $(".link_dot").hoverIntent({
+  interval: 10,
+  timeout: 200,
+  sensitivty: 7,
+  over: function () {
+      num=$(this).attr('href').split('=')[1];
+     $(this).text(num);
+    },
+	out: function () {
+	 $(this).text('. ');
+    }
+  });
+});
+</script>
+
+{% endblock %}

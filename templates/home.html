@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div id='latest-post'>
+	<div id='latest-post-image-caption'>
+		{% if latest.image %}
+			<div class='post-image' style='text-align:center'>
+				<img src="{{latest.image}}" alt="{{latest.title}}" style='opacity:0.9'>
+			</div>
+		{% endif %}
+		<div class = 'title-overlay accent-text'>
+			<b>{{latest.title}}</b>
+		</div>
+	</div>
+	<div class = 'latest-audio-player'>
+		<audio src={{latest.audio_file_location}} preload='none' type='audio/mp3' style='width:100%'>
+		</audio>
+	</div>
+	<div class='post-header accent-text'>
+		Our Latest Episode
+	</div>
+</div>
+<!--<div class='row'>
+	<div id='popular-post' class='span4'>
+		<div class='popular-unpopular-post site-description'>
+			Recent Popular Episode
+		</div>
+		<div class = 'audio-player'>
+			<b><center>[THIS IS WHERE THE AUDIO PLAYER LIVES]</center></b>
+		</div>
+		<div class='caption'>
+			Jump on the bandwagon!
+		</div>
+	</div>
+	<div id='unpopular-post' class='span4'>
+		<div class='popular-unpopular-post site-description'>
+			Recent Unpopular Episode
+		</div>
+		<div class = 'audio-player'>
+			<b><center>[THIS IS WHERE THE AUDIO PLAYER LIVES]</center></b>
+		</div>
+		<div class='caption'>
+			Won't you love it?
+		</div>
+	</div>
+</div>-->
+<div class='row post-header'>
+	<hr>
+	<br>
+	<a href='/posts'>&#8594 More Episodes &#8594</a>
+</div>
+{% endblock %}

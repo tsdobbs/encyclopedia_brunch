@@ -1,0 +1,157 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{ title }} - Encycolpedia Brunch</title>
+    {% else %}
+    <title>Encyclopedia Brunch!</title>
+    {% endif %}
+	<link rel="shortcut icon" type="image/x-icon" href="/static/img/EB Favicon.png"/>
+	
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="/static/css/squarespace.css" rel="stylesheet">
+	<link href="/static/css/eb.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/mediaelement/build/jquery.js"></script>
+	<script src="/static/js/mediaelement/build/mediaelement-and-player.min.js"></script>
+	<link href="/static/js/mediaelement/build/mediaelementplayer.min.css" rel="Stylesheet">
+	<script src="/static/js/jquery.hoverIntent.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	
+  </head>
+  <body>
+  <div id="site">
+
+	<div id="top-matter">
+		<h1 class="banner">
+								<a href="/" title="Encyclopedia Brunch">
+								  <span class="banner"><img class="banner" src="/static/img/EB Banner.png" alt="Encyclopedia Brunch" /></span>
+								  
+								</a>
+							</h1>
+		<div class="site-description accent-text">
+		A weekly fun chat on an eclectic selection of topics<br></div>
+		
+		<div id="navBlock" role="navigation" style="text-transform:uppercase">
+			<nav class="main-nav" data-content-field="navigation" id="yui_3_17_2_1_1443337538091_613">
+			<ul>
+			
+        <li {% if request.path == '/' %} class="active-link" {%endif%}>
+          <a href="/">Featured</a>
+        </li>
+
+        <li {% if request.path == '/posts' %} class="active-link" {%endif%}>
+          <a href="/posts">Episodes</a>
+        </li>
+  
+        <li {% if request.path == '/about' %} class="active-link" {%endif%}>
+          <a href="/about">About The Show</a>
+        </li>
+ 
+      <li class="folder-collection folder">
+        <a aria-haspopup="true" href="#" onClick="return false;" class="">Subscribe</a>
+        <div class="subnav">
+          <ul>
+
+                <li class="external-link">
+                  <a href="https://itunes.apple.com/us/podcast/doomed-to-fail-podcast/id492516312#">Subscribe in iTunes</a>
+                </li>
+ 
+                <li class="external-link">
+                  <a href="http://feeds.feedburner.com/DoomedToFailpodcast">Subscribe With Another Program</a>
+                </li>
+     
+                <!--<li class="page-collection">
+                  <a href="/subscribe-by-scanning-a-qr-code/">Subscribe by Scanning a QR Code</a>
+                </li>-->
+				     
+          </ul>
+		  
+		  		<li class="folder-collection folder">
+        <a aria-haspopup="true" href="#" onClick="return false;" class="">Get In Touch</a>
+        <div class="subnav">
+          <ul>
+
+                <li class="external-link">
+                  <a href="https://twitter.com/WhoLikesBrunch">Twitter</a>
+                </li>
+ 
+                <li class="external-link">
+                  <a href="https://facebook.com/encyclopediabrunch">Facebook</a>
+                </li>
+				
+				<li class="external-link">
+                  <a href="https://plus.google.com/108808175400717237994">Google+</a>
+                </li>
+     
+                <li class="page-collection">
+                  <a href="mailto:encyclopediabrunch@gmail.com">Email</a>
+                </li>
+        </div>
+      </li>
+
+  </ul>
+
+  <select id="mobileSelect" name="mobileSelect" onChange="window.document.location.href=this.options[this.selectedIndex].value;" value="GO">>
+    <option class="mobile-select-label" value="">Navigation</option>
+    
+          <option value="/" {% if request.path == '/' %} selected="selected" {%endif%}><a href='/'>Featured</a></option>
+
+          <option value="/posts" {% if request.path == '/posts' %} selected="selected" {%endif%}>Episodes</option>
+
+          <option value="/about" {% if request.path == '/about' %} selected="selected" {%endif%}>About The Show</option>
+
+        <optgroup label="Subscribe" >Subscribe
+  
+            <option class="external-link" value="https://itunes.apple.com/us/podcast/doomed-to-fail-podcast/id492516312#">Subscribe in iTunes</option>
+ 
+            <option class="external-link" value="http://feeds.feedburner.com/DoomedToFailpodcast">Subscribe With Another Program</option>
+  
+            <!--<option class="page-collection" value="/subscribe-by-scanning-a-qr-code/">Subscribe by Scanning a QR Code</option>-->
+             
+        </optgroup>
+      
+		<optgroup label="Get In Touch" >Subscribe
+  
+            <option class="external-link" value="https://twitter.com/WhoLikesBrunch">Twitter</option>
+ 
+            <option class="external-link" value="https://facebook.com/encyclopediabrunch">Facebook</option>
+			
+			<option class="external-link" value="https://plus.google.com/108808175400717237994">Google+</option>
+  
+            <option class="page-collection" value="mailto:encyclopediabrunch@gmail.com">Email</option>
+             
+        </optgroup>
+    
+  </select>
+
+</nav>
+
+		</div>
+	</div>
+	
+	<div class="container">
+	<div class="row">
+	<div id="content">
+	<div class="span8 offset2">
+    {% block content %}{% endblock %}
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	<div class="site-footer accent-text">
+		A Big Dog / Little Dog Production
+	</div>
+  </div>
+  
+ <script>
+// using jQuery
+$('video,audio').mediaelementplayer({audioHeight:30});
+</script>
+
+  </body>
+</html>
