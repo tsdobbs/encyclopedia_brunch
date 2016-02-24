@@ -1,7 +1,7 @@
 # encyclopedia_brunch
 The website for the Encyclopedia Brunch podcast
 
-Thanks for looking at this repository! This is the backend code for encyclopediabrunch.com.
+Thanks for looking at this repository! This is the backend code for http://encyclopediabrunch.com.
 It was written from scratch (and with the help of a lot of tutorials) by Tim Dobbs.  
 
 =======================================================================================
