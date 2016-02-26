@@ -45,4 +45,4 @@ Finally, to make the pagination widget at the bottom of the posts work, include 
 
 ###Content NOT included:  
 When looking for shows to display, the code looks for a SQLite database called 'eb.db', which is not included in this repository.   Details of the model for this database can be found in models.py  
-Images are stored in static/img, but most image locations are not hardcoded, so it will depend what location you enter into eb.db  
+Images should be stored in static/img/[filename]. Post image locations are not hardcoded, but rather stored in the post column in eb.db
