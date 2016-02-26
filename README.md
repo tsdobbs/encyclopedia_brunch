@@ -2,7 +2,7 @@
 The website for the Encyclopedia Brunch podcast
 
 Thanks for looking at this repository! This is the backend code for http://encyclopediabrunch.com.
-It was written from scratch (and with the help of a lot of tutorials) by Tim Dobbs.  
+It was written from scratch (and with the help of some lovely tutorials) by Tim Dobbs.  
 
 =======================================================================================
 
@@ -45,4 +45,4 @@ Finally, to make the pagination widget at the bottom of the posts work, include 
 
 ###Content NOT included:  
 When looking for shows to display, the code looks for a SQLite database called 'eb.db', which is not included in this repository.   Details of the model for this database can be found in models.py  
-Images should be stored in static/img/[filename]. Post image locations are not hardcoded, but rather stored in the post column in eb.db
+Images should be stored in static/img/[filename]. Post image locations are not hardcoded, but rather stored in the _post_ table in eb.db
