@@ -15,6 +15,7 @@
 	margin-bottom: 140px;
 }
 
+/* Designed so that the caption sits inside of the post image */
 #latest-post-image-caption{
 	position:relative;
 }
@@ -23,6 +24,7 @@
 	color: c5211e;
 }
 
+/* For if smaller posts are included on the front page, e.g. "Recent popular post" and "Recent unpopular post" */
 .popular-unpopular-post{
 	color: f6b900;
 }
@@ -31,6 +33,7 @@
 	color: cfcfcf;
 }
 
+/* Top banner image. Keeps it centered */
 .banner{
 	display:block;
 	margin-left: auto;
@@ -38,6 +41,7 @@
 	text-align:center;
 }
 
+/* Subheading just below top banner image */
 .site-description{
 	display: block;
 	font-family: "Cabin";
@@ -59,6 +63,7 @@
 	color:#000;
 }
 
+/* For a caption overlaid over an image, specifically the "Our Latest Episode" */
 .title-overlay{
 	font-family:'Lobster';
 	font-size: 5vmax;

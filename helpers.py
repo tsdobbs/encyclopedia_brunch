@@ -1,5 +1,10 @@
+#helpers.py - Short functions that are used more than once elsewhere but are too long to write out more than once
+
 import datetime
 
+#Takes a Python datetime object as input and outputs a string in the preferred format used in RSS feeds.
+#[Day of Week], [Day] [Month] [Year] [HH:MM:SS] +[Time Zone]
+#Note that this page always publishes in UTC
 def format_date_rss(my_date):
 	date_string = {0:'Mon',1:'Tue',2:'Wed',3:'Thu',4:'Fri',5:'Sat',6:'Sun'}[my_date.weekday()] + ', '
 	date_string += str(my_date.day) + ' '

@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
+
 {% for post in posts %}
 <div class='post'>
 	<div class='post-topper'>
@@ -37,6 +38,8 @@
 	<hr>
 </div>
 {% endfor %}
+
+<!--Displays page options. Shows first two pages, last two pages, and current page +-1 if not one first or last page. All other pages are show as dots-->
 {% if current_page %}
 <div class='post' style='text-align:center'>
 	Page:
@@ -61,6 +64,7 @@
 </div>
 {% endif %}
 
+<!--When mouse hovers over a dot representing a page, dot turns into that number. There is a delay in changing back ("timeout") to avoid jerkiness-->
 <script>
 $( function() {
   var num;
