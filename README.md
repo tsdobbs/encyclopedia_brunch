@@ -7,7 +7,7 @@ It was written from scratch (and with the help of some lovely tutorials) by Tim 
 =======================================================================================
 
 ###Files:
-* run.py - Run this file to start the Flask server
+* run.py - Run this file to start the app, running on Flask
 * \__init\__.py - Initializes the Flask framework and the SQLAlchemy extension
 * config.py - Configures SQLAlechmy to open the correct database from which to read content
 * models.py - Defines the database models for the app
