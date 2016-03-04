@@ -63,7 +63,8 @@ def submit():
 	#Automate population of music and music_link_table.
 		# Just have a line for that info, probably with a little + button and some javascript to allow additional lines for additional bands.
 		# Autofill the first line with BLAMMOS, but allow it to be changed
-	return render_template('submit.html')
+	images = helpers.get_image_selection(request.args.get('title'))
+	return render_template('submit.html', images=images)
 
 #Displays the "About The Show" page. Static.
 @app.route('/about')

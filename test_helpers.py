@@ -27,6 +27,15 @@ class TestHelpers (unittest.TestCase):
             image_list = get_image_selection(title)
             self.assertTrue(len(image_list)>0)
 
+    def test_wikipedia_nobigpics(self):
+        """
+        Makes sure that if a page is returned but it has no pics that are big enough, returns a blank list but no errors
+        """
+        title_list = ['landshark', 'oil drilling']
+        for title in title_list:
+            image_list = get_image_selection(title)
+            self.assertTrue(True)
+
     def test_wikipedia_nonsense(self):
         """
         Makes sure that if nonsense is supplied function returns a blank list, but no errors

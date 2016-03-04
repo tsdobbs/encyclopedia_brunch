@@ -14,6 +14,11 @@ def format_date_rss(my_date):
 	date_string += my_date.isoformat()[11:19] + ' +0000'
 	return date_string
 
+#replaces special characters with their URL encoding so that urls don't get all weird
+def url_cleaner(url):
+	url = url.replace('&','%26')
+	return url
+
 #For submitting new episodes
 #Takes the title of an episode and searches Wikipedia for a list of images on the closest related page
 #Removes any images that are too small (<800x600) from the list, then returns a best guess and a few other options
@@ -29,7 +34,7 @@ def get_image_selection(title):
 	for page in returned_pages:
 		try:
 			for image in raw_image_dict['query']['pages'][page]['images']:
-				raw_image_list.append(image['title'])
+				if '.svg' not in image['title']: raw_image_list.append(url_cleaner(image['title']))
 		except KeyError:
 			pass
 
@@ -43,15 +48,16 @@ def get_image_selection(title):
 		for page in returned_pages:
 			width = int(image_size_dict['query']['pages'][page]['imageinfo'][0]['width'])
 			height = int(image_size_dict['query']['pages'][page]['imageinfo'][0]['height'])
-			if width > 800 and height > width/2.5 and height < width * 1.5: big_image_list.append(image_size_dict['query']['pages'][page]['title'])
+			if width > 800 and height > width/2.5 and height < width * 1.5: big_image_list.append(url_cleaner(image_size_dict['query']['pages'][page]['title']))
 
-		#of the images that meet size restrictions, takes the first 5, then requests urls of the thumbnails of those images at 1000px wide
-		#if the image is <1000px wide naturally, Wikimedia helpfully returns the original image instead of a scaled one
-		api_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&titles=" + "|".join(big_image_list[:5]) + "&iiprop=url&iiurlwidth=1000"
-		scaled_image_json = requests.get(api_url).text
-		scaled_image_dict = json.loads(scaled_image_json)
-		returned_pages = scaled_image_dict['query']['pages'].keys()
-		for page in returned_pages:
-			scaled_image_list.append(scaled_image_dict['query']['pages'][page]['imageinfo'][0]['thumburl'])
+		if big_image_list:
+			#of the images that meet size restrictions, takes the first 5, then requests urls of the thumbnails of those images at 1000px wide
+			#if the image is <1000px wide naturally, Wikimedia helpfully returns the original image instead of a scaled one
+			api_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&titles=" + "|".join(big_image_list[:5]) + "&iiprop=url&iiurlwidth=1000"
+			scaled_image_json = requests.get(api_url).text
+			scaled_image_dict = json.loads(scaled_image_json)
+			returned_pages = scaled_image_dict['query']['pages'].keys()
+			for page in returned_pages:
+				scaled_image_list.append(scaled_image_dict['query']['pages'][page]['imageinfo'][0]['thumburl'])
 
 	return scaled_image_list
