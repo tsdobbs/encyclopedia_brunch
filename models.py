@@ -27,7 +27,7 @@ class post(db.Model):
 	def __repr__(self):
 		return '<%r>' % (self.title)
 
-# All music used in episodes should include attribution. This is stored in a seperate table to allow easier searching
+# All music used in episodes should include attribution. This is stored in a separate table to allow easier searching
 # This table is connected to the post table via the music_link_table
 # This table is connected to the post table via the music_link_table
 class music(db.Model):

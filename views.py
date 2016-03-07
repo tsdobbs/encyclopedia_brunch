@@ -1,10 +1,11 @@
 #views.py - Maps URLs to backend functions, then returns the results to the appropriate view
 
-import datetime, math
+import datetime, math, markdown
 from __init__ import app, db, models
 import helpers
 from flask import render_template, flash, redirect, url_for, request, Response
 from sqlalchemy import desc, extract
+from forms import submit_ep_form
 
 #Home page
 #Determines what the latest episode is by querying for all episodes, ordered by ascending show number, then takes the last result
@@ -25,7 +26,8 @@ def posts(year=None, month=None, day=None, title=None):
 	if title:
 		posts = models.post.query.filter(models.post.title == title.replace('_',' ')).filter(extract('year',models.post.date)==year).filter(extract('month',models.post.date)==month).filter(extract('day',models.post.date)==day).all()
 		if len(posts) != 0:
-			#MARKDOWN - When we change the 'notes' column to be written in markdown, translation should happen here.
+			#translate notes from Markdown to HTML. There should only be one post in this case, so here we only translate the first entry in the list
+			posts[0].html_notes = markdown.markdown(posts[0].notes)
 			return render_template('posts.html', posts=posts)
 
 	#Queries for all posts that have a date before the time of query. Anything with a date after the time of query is considered "Scheduled" and isn't displayed
@@ -37,6 +39,7 @@ def posts(year=None, month=None, day=None, title=None):
 		date=helpers.format_date_rss(datetime.datetime.utcnow())
 		for post in posts:
 			post.itunes_date = helpers.format_date_rss(post.date)
+			post.html_notes = markdown.markdown(post.notes)
 		return Response(render_template('rss.xml', date=date, posts=posts), mimetype='text/xml')
 
 	else:
@@ -53,18 +56,21 @@ def posts(year=None, month=None, day=None, title=None):
 		display_start = display_end - posts_per_page
 		numpages = math.ceil(len(posts)/posts_per_page)
 		posts = posts[display_start:display_end]
+		for post in posts:
+			post.html_notes = markdown.markdown(post.notes)
 		return render_template('posts.html', posts=posts, numpages=numpages, current_page=current_page)
 
 #Should be used to allow creator to submit a new episode within the browser
 @app.route('/submit')
-def submit():
+def submit(methods = ['GET','POST']):
 	#require password to access, obviously
 	#Automate populating most columns in the post table
 	#Automate population of music and music_link_table.
 		# Just have a line for that info, probably with a little + button and some javascript to allow additional lines for additional bands.
 		# Autofill the first line with BLAMMOS, but allow it to be changed
+	form = submit_ep_form()
 	images = helpers.get_image_selection(request.args.get('title'))
-	return render_template('submit.html', images=images)
+	return render_template('submit.html', images=images, form=form)
 
 #Displays the "About The Show" page. Static.
 @app.route('/about')

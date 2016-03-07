@@ -1,9 +1,23 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-{% for image in images %}
-<img src="{{image}}">
-<hr>
-{% endfor %}
+<form action="" method="post" name="submit_ep">
+    {{ form.hidden_tag() }}
+    <p>Title: {{ form.title(size=80) }}</p>
+    <p>Publish Date: {{ form.date }} {{ form.publish_now }} Publish Now?</p>
+    <p>Audio File Location: {{ form.audio_file_location }} {{ form.audio_upload }} Upload Audio to Server?</p>
+    <p>Image Location: {{ form.image }} {{ form.image_upload }} Upload an Image?
+            <br> Suggestions:
+            <br> {% if not images %} None {% endif %}
+                {% for image in images %}
+                <img src="{{image}}" style="width: 150px">
+            {% endfor %}</p>
+    <p>Notes (HTML or Markdown):
+        <br>{{ form.notes(rows=10,style="width: 500px;") }}</p>
+    <p>Music Artist: {{ form.music_artist(size=80) }}</p>
+    <p>Music Song: {{ form.music_song(size=80) }}</p>
+    <p>Music Website: {{ form.music_website(size=80) }}</p>
+    <p><input type="submit" value="Submit"></p>
+  </form>
 
 {% endblock %}

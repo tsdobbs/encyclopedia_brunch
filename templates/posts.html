@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class = 'post-body'>
-		<p>{{post.notes|safe}}</p>
+		{{post.html_notes|safe}}
 	</div>
 	{% if post.audio_file_location %}
 	<div class = 'audio-player'>

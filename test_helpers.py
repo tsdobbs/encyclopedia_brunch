@@ -2,7 +2,7 @@ import unittest
 import os
 from helpers import get_image_selection
 
-class TestHelpers (unittest.TestCase):
+class TestWikipedia (unittest.TestCase):
     """
     Defines the unit test cases for the various helper functions used
     """
