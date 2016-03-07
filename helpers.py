@@ -15,17 +15,6 @@ def format_date_rss(my_date):
 	date_string += my_date.isoformat()[11:19] + ' +0000'
 	return date_string
 
-#Takes a list of posts and translates the 'notes' field in each post from Markdown to HTML
-def translate_markdown_notes(posts):
-	count = 0
-	fail_list = list()
-	for post in posts:
-		post.html_notes = markdown.markdown(post.notes)
-		if post.html_notes != post.notes and post.html_notes != "<p>" + post.notes + "</p>":
-			count +=1
-			fail_list.append(post.title)
-	return count, fail_list
-
 #replaces special characters with their URL encoding so that urls don't get all weird
 def url_cleaner(url):
 	url = url.replace('&','%26')
@@ -65,7 +54,7 @@ def get_image_selection(title):
 		if big_image_list:
 			#of the images that meet size restrictions, takes the first 5, then requests urls of the thumbnails of those images at 1000px wide
 			#if the image is <1000px wide naturally, Wikimedia helpfully returns the original image instead of a scaled one
-			api_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&titles=" + "|".join(big_image_list[:10]) + "&iiprop=url&iiurlwidth=1000"
+			api_url = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=imageinfo&titles=" + "|".join(big_image_list[:5]) + "&iiprop=url&iiurlwidth=1000"
 			scaled_image_json = requests.get(api_url).text
 			scaled_image_dict = json.loads(scaled_image_json)
 			returned_pages = scaled_image_dict['query']['pages'].keys()

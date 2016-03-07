@@ -4,13 +4,14 @@
 <form action="" method="post" name="submit_ep">
     {{ form.hidden_tag() }}
     <p>Title: {{ form.title(size=80) }}</p>
-    <p>Publish Date: {{ form.date }} {{ form.publish_now }} Publish Now?</p>
+    <p>{{ form.publish_now }} Publish Now? <br>
+        <span id="publish_date"> Publish Date: {{ form.date }}</span></p>
     <p>Audio File Location: {{ form.audio_file_location }} {{ form.audio_upload }} Upload Audio to Server?</p>
     <p>Image Location: {{ form.image }} {{ form.image_upload }} Upload an Image?
             <br> Suggestions:
             <br> {% if not images %} None {% endif %}
                 {% for image in images %}
-                <img src="{{image}}" style="width: 150px">
+                <img src="{{image}}" class='wikipic' style="width: 150px; opacity: 0.6">
             {% endfor %}</p>
     <p>Notes (HTML or Markdown):
         <br>{{ form.notes(rows=10,style="width: 500px;") }}</p>
@@ -19,5 +20,29 @@
     <p>Music Website: {{ form.music_website(size=80) }}</p>
     <p><input type="submit" value="Submit"></p>
   </form>
+
+
+
+<script>
+$(document).ready(function(){
+    $("#publish_date").hide();
+
+    $("#publish_now").click(function(){
+        if ($("#publish_now").is(":checked")){
+           $("#publish_date").slideUp();
+        }
+        else{
+            $("#publish_date").slideDown();
+        }
+    });
+
+    $(".wikipic").click(function(){
+        $("#image").val(this.getAttribute('src'));
+        $(".wikipic").css({opacity: 0.6});
+        $(this).css({opacity: 1})
+    });
+
+});
+</script>
 
 {% endblock %}
