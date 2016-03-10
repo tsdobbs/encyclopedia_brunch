@@ -32,7 +32,7 @@
 			{% endif %}
 		</div>
 		<div class = 'faded-text span2'>
-			<div style='float:right'>{{post.date.year}}-{{post.date.month}}-{{post.date.day}}</div>
+			<div name = 'post_date' style='float:right'>{{post.date}}+0000</div>
 		</div>
 	</div>
 	<hr>
@@ -63,6 +63,20 @@
 	{% endfor %}
 </div>
 {% endif %}
+
+<!--Converts server date for posts to local date-->
+<script>
+function utc_to_local(date) {
+    var time_string_utc = date; // timestamp from db
+	var time_string_utc_epoch = Date.parse(time_string_utc);
+	var time_local = new Date();
+	time_local.setTime(time_string_utc_epoch);
+    return time_local.getFullYear() + '-' + (time_local.getMonth()+1) + '-' + time_local.getDate()
+}
+for (i = 0; i < document.getElementsByName("post_date").length; i++) {
+    document.getElementsByName("post_date")[i].innerHTML = utc_to_local(document.getElementsByName("post_date")[i].innerHTML);
+}
+</script>
 
 <!--When mouse hovers over a dot representing a page, dot turns into that number. There is a delay in changing back ("timeout") to avoid jerkiness-->
 <script>

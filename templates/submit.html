@@ -5,19 +5,38 @@
     {{ form.hidden_tag() }}
     <p>Title: {{ form.title(size=80) }}</p>
     <p>{{ form.publish_now }} Publish Now? <br>
-        <span id="publish_date"> Publish Date: {{ form.date }}</span></p>
-    <p>Audio File Location: {{ form.audio_file_location }} {{ form.audio_upload }} Upload Audio to Server?</p>
-    <p>Image Location: {{ form.image }} {{ form.image_upload }} Upload an Image?
+        <span id="publish_date"> Publish Date: {{ form.date }}</span>
+    </p>
+
+    <p>{{ form.audio_upload_option }} Upload Audio to Server?<br>
+        <span id="audio_location_inputs">Audio File Location: {{ form.audio_file_location }}</span>
+        <span id="audio_upload_inputs">Upload Audio File: {{ form.audio_upload }}</span>
+    </p>
+
+    <p> {{ form.image_upload_option }} Upload an Image Instead?<br>
+        <span id="image_upload_inputs">Upload Image: {{ form.image_upload }}</span>
+        <span id="image_location_inputs">Image Location: {{ form.image }}
             <br> Suggestions:
             <br> {% if not images %} None {% endif %}
                 {% for image in images %}
                 <img src="{{image}}" class='wikipic' style="width: 150px; opacity: 0.6">
-            {% endfor %}</p>
+            {% endfor %}
+        </span>
+    </p>
+
     <p>Notes (HTML or Markdown):
         <br>{{ form.notes(rows=10,style="width: 500px;") }}</p>
-    <p>Music Artist: {{ form.music_artist(size=80) }}</p>
-    <p>Music Song: {{ form.music_song(size=80) }}</p>
-    <p>Music Website: {{ form.music_website(size=80) }}</p>
+    <p><table class = "ep_music">
+    <tr>
+        <td>Music Artist:</td><td>Music Song:</td><td>Music Website:</td><td class="btn" id="more_music">More</td>
+    </tr>
+    <tr id="music_inputs_blammos">
+        <td>{{ form.music_artist(size=80, value='BLAMMOS') }}</td><td>{{ form.music_song(size=80, value='How Do You Know?') }}</td><td>{{ form.music_website(size=80, value='blammos.bandcamp.com') }}</td>
+    </tr>
+    <tr id="music_inputs">
+        <td>{{ form.music_artist(size=80) }}</td><td>{{ form.music_song(size=80) }}</td><td>{{ form.music_website(size=80) }}</td>
+    </tr>
+    </table></p>
     <p><input type="submit" value="Submit"></p>
   </form>
 
@@ -26,13 +45,47 @@
 <script>
 $(document).ready(function(){
     $("#publish_date").hide();
+    if ($("#audio_upload_option").is(":checked")){
+        $("#audio_location_inputs").hide();
+    }
+    else{
+        $("#audio_upload_inputs").hide();
+    }
+    if ($("#image_upload_option").is(":checked")){
+        $("#image_location_inputs").hide();
+    }
+    else{
+        $("#image_upload_inputs").hide();
+    }
 
     $("#publish_now").click(function(){
-        if ($("#publish_now").is(":checked")){
+        if ($(this).is(":checked")){
            $("#publish_date").slideUp();
         }
         else{
             $("#publish_date").slideDown();
+        }
+    });
+
+    $("#audio_upload_option").click(function(){
+        if ($(this).is(":checked")){
+           $("#audio_location_inputs").hide();
+           $("#audio_upload_inputs").show();
+        }
+        else{
+           $("#audio_location_inputs").show();
+           $("#audio_upload_inputs").hide();
+        }
+    });
+    
+    $("#image_upload_option").click(function(){
+        if ($(this).is(":checked")){
+           $("#image_location_inputs").hide();
+           $("#image_upload_inputs").show();
+        }
+        else{
+           $("#image_location_inputs").show();
+           $("#image_upload_inputs").hide();
         }
     });
 
@@ -42,7 +95,20 @@ $(document).ready(function(){
         $(this).css({opacity: 1})
     });
 
+    $("#more_music").click(function(){
+        $("#music_inputs").clone().appendTo(".ep_music");
+    });
+
 });
 </script>
 
 {% endblock %}
+
+<!-- Still need to add:
+JQuery to look for wikipedia pics only after typing in Title
+Understand how file upload works in the backend for images
+Widget for selecting upload date - needs to force format, but also convert to UTC in the processing phase
+clarify how to process multiple Music inputs on the backend
+
+Last, a way to upload the show, then have it automatically submit to InternetArchive and note the URL, plus fill in Title info
+LAST last, a way to upload to the EB server instead-->

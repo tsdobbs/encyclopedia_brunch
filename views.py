@@ -31,7 +31,6 @@ def posts(year=None, month=None, day=None, title=None):
 			return render_template('posts.html', posts=posts)
 
 	#Queries for all posts that have a date before the time of query. Anything with a date after the time of query is considered "Scheduled" and isn't displayed
-	#MARKDOWN - When we change the 'notes' column to be written in markdown, the translation should be done after this line probably. Maaaaybe after the pagination has been figured out, since there'll be fewer posts then?
 	posts = models.post.query.filter(models.post.date < datetime.datetime.utcnow()).order_by(desc(models.post.date)).all()
 
 	#If the requested format is RSS, rewrites the dates into the preferred version for RSS, then renders into XML
