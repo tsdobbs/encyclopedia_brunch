@@ -1,14 +1,23 @@
 #models.py - Defines the database tables used in the website. These are used to store information about episodes,
 # which is displayed with each post
 
-from __init__ import db
+from __init__ import db, admin
 
 #music_link_table is a two-column table that connects the post table and the music table
 #This allows many-to-many relationships, so many posts can use the same song, and many songs can be used in the same post
 music_link_table = db.Table('music_link', db.Model.metadata,
+    db.Column('id', db.Integer, primary_key = True),
 	db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
 	db.Column('music_id', db.Integer, db.ForeignKey('music.id'))
 )
+
+class music_link(object):
+    def __init__(self, post_id, music_id):
+        self.post_id = post_id
+        self.music_id = music_id
+
+db.mapper(music_link, music_link_table)
+db.create_all()
 
 #Every post on the website has an entry in post
 #Note that audio files and image files are stored as strings referencing the URL where those files live, not as blobs
@@ -37,4 +46,4 @@ class music(db.Model):
 	website = db.Column(db.String())
 
 	def __repr__(self):
-		return '<Artist: %r>' % (self.artist)
+		return '<Artist: %r><Song: %r>' % (self.artist, self.song)

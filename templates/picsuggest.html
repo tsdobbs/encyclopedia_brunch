@@ -1,0 +1,5 @@
+Suggestions:
+<br> {% if not images %} None {% endif %}
+{% for image in images %}
+    <img src="{{image}}" class='wikipic' style="width: 150px; opacity: 0.6">
+{% endfor %}

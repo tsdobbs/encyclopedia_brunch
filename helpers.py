@@ -1,8 +1,9 @@
 #helpers.py - Short functions that are used more than once elsewhere but are too long to write out more than once
 
-import datetime
-import markdown
+import datetime, math
 import requests, json
+import models
+from flask import request
 
 #Takes a Python datetime object as input and outputs a string in the preferred format used in RSS feeds.
 #[Day of Week], [Day] [Month] [Year] [HH:MM:SS] +[Time Zone]
@@ -14,6 +15,19 @@ def format_date_rss(my_date):
 	date_string += str(my_date.year) + ' '
 	date_string += my_date.isoformat()[11:19] + ' +0000'
 	return date_string
+
+#Figures out when we likely want a newly submitted show to post.
+#Pulls the post date of the latest show (already-posted, or scheduled to be posted), then returns the Sunday after that at 20:01 UCT (12:01PM PST)
+def check_next_post_date():
+	last_post = models.post.query.filter(models.post.show_number).order_by(models.post.show_number).all()[-1].date
+	#If the Sunday after the last post has already passed, determines how many weeks it's been and adds to that the date that will be returned
+	weeks_ahead = max(math.floor(((datetime.datetime.utcnow() - last_post).days)/7)*7,0)
+	if 6-last_post.weekday() == 0:
+		next_post = last_post + datetime.timedelta(7 + weeks_ahead,72060 - last_post.hour*3600-last_post.minute*60-last_post.second,0)
+	else:
+		next_post = last_post + datetime.timedelta(6-last_post.weekday()+weeks_ahead,72060 - last_post.hour*3600-last_post.minute*60-last_post.second,0)
+	return next_post
+
 
 #replaces special characters with their URL encoding so that urls don't get all weird
 def url_cleaner(url):
@@ -62,3 +76,20 @@ def get_image_selection(title):
 				scaled_image_list.append(scaled_image_dict['query']['pages'][page]['imageinfo'][0]['thumburl'])
 
 	return scaled_image_list
+
+#def process_ep_submission(form):
+	#create new record
+	#Determine the next show number, add
+	#form.title
+	#If "publish now", get current UTC time and enter into DB, else use form.date
+	#If audio_upload, stream file up to /public_html/static/audio and enter address into DB, else use form.audio_file_location
+	#If image_upload, stream file up to /public_html/static/img/post_images/[show_num]-[form.title] and enter address into DB,
+		# else get file from URL, save to same place, and enter into DB
+	#form.notes
+	#Get post.id from latest entry
+	#for each row of music:
+		#check db.music for artist&&song
+		#if so, get music.id
+			#else add form.music_artist, form.music_song, form.music_website
+			#get music.id from latest entry
+		#add music.id and post.id to music_link

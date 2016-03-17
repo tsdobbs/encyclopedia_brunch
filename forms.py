@@ -1,11 +1,12 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, BooleanField, DateTimeField, TextAreaField, FileField
-from wtforms.validators import DataRequired
+from wtforms import StringField, BooleanField, TextAreaField, FileField, DateTimeField
+from wtforms.validators import DataRequired, Regexp
+import helpers, re
 
 class submit_ep_form(Form):
     title = StringField('title', validators=[DataRequired()])
-    publish_now = BooleanField('publish_now?', default=True)
-    date = DateTimeField('publish_date',validators=[DataRequired()],format='%Y-%m-%d %H:%M:%S')
+    publish_now = BooleanField('publish_now?', default=False)
+    date = DateTimeField('publish_date',validators=[DataRequired()],format='%Y-%m-%d %H:%M:%S', default=helpers.check_next_post_date())
     audio_file_location = StringField('audio_file_location')
     audio_upload = FileField('audio_upload')
     audio_upload_option = BooleanField('upload_audio_to_server?', default=False)
