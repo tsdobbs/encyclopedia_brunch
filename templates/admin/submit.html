@@ -126,7 +126,7 @@ $(document).ready(function(){
     //Load pictures from wikipedia when typing into Title input
     $("#title").change(function(){
         $("#pic_suggestions").html("<hr>Loading Image Suggestions...<hr>");
-        $("#pic_suggestions").load( encodeURI("picsuggest/" + document.getElementById("title").value) , make_pics_clickable);
+        $("#pic_suggestions").load( encodeURI("picsuggest/") + encodeURIComponent(document.getElementById("title").value) , make_pics_clickable);
     });
 
 });
