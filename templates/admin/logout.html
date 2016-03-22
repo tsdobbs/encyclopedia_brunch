@@ -1,0 +1,10 @@
+<!--Defines whether to display the log-out button or not-->
+{% extends 'admin/base.html' %}
+
+{% block access_control %}
+{% if current_user.is_authenticated %}
+<div class="btn pull-right">
+        <a href="{{ url_for('admin.logout_view') }}">Log out</a>
+</div>
+{% endif %}
+{% endblock %}
