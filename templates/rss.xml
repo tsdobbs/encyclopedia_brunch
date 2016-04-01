@@ -7,7 +7,7 @@
 		
 	<img class="thumb-image" data-image="{{request.url_root[:-1]}}{{post.image}}" data-image-dimensions="1152x768" data-image-focal-point="0.5,0.5" data-load="false" " data-type="image" src="{{request.url_root}}{{post.image}}" />
 
-	<p>{{post.notes|safe}}</p>
+	<p>{{post.html_notes|safe}}</p>
 
 	{% if post.music %} <p>Music by: | {% for music in post.music %}<a href='http://{{music.website}}'>{{music.artist}}</a> | {% endfor %}</p> {% endif %}]]> </description><itunes:author>Encyclopedia Brunch</itunes:author><itunes:explicit>no</itunes:explicit><itunes:image href="{{request.url_root}}static/img/Coverart.png"/><enclosure url="{%if post.audio_file_location[0]=='/'%}{{request.url_root[:-1]}}{%endif%}{{post.audio_file_location}}" type="audio/mpeg"/></item>
 {% endfor %}
