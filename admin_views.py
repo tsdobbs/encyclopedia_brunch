@@ -8,6 +8,7 @@ import flask_login as login
 from werkzeug import secure_filename
 import os, requests, datetime
 from sqlalchemy import desc
+import markdown
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -104,7 +105,7 @@ class AdminSubmitView(AdminIndexView):
                     db.session.add(models.music_link(post_id=post_id, music_id=music_id))
                 db.session.commit()
 
-            return redirect('/')
+            return redirect(url_for('.preview_view'))
         return self.render('admin/submit.html', form=form)
 
     @expose('/login/', methods=('GET', 'POST'))
@@ -124,6 +125,18 @@ class AdminSubmitView(AdminIndexView):
     def logout_view(self):
         login.logout_user()
         return redirect(url_for('.index'))
+
+    #Preview the post you just made to make sure it looks about how you think it should
+    #A better way to do this would be to set up the preview from form variables, then not commit to the db until after the preview
+    #   However, the way the session is committed in the submit step above means that it would have to be slightly reworked
+    #   This method works for now so that at least the user sees the result before it goes live, if scheduled
+    @expose('/preview/', methods=('GET','POST'))
+    def preview_view(self):
+        post = models.post.query.order_by(desc(models.post.id)).first()
+        post.title = 'PREVIEW || ' + post.title + ' || WILL POST ON ' + str(post.date)
+        post.html_notes = markdown.markdown(post.notes, extensions=['markdown.extensions.sane_lists','markdown.extensions.nl2br'])
+        return self.render('posts.html', posts=[post])
+
 
 admin = Admin(app, name='encyclopedia brunch', template_mode='bootstrap3', index_view=AdminSubmitView(), base_template='admin/logout.html')
 admin.add_view(PostModelView(models.post, db.session))

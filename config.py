@@ -15,8 +15,8 @@ SECRET_KEY = 'my_secret'
 #It checks the parent directory of the code directory for a folder that matches alternate_path. If it exists, it uses
 #it. Otherwise it uses the basedir
 alternate_path = "public_html"
-if os.path.exists(os.path.exists(os.path.join(os.path.split(os.path.abspath(os.path.dirname(__file__)))[0],alternate_path))):
-    static_basedir = os.path.join(os.path.split(os.path.abspath(os.path.dirname(__file__)))[0],alternate_path)
+if os.path.exists(os.path.join(os.path.split(basedir)[0],alternate_path)):
+    static_basedir = os.path.join(os.path.split(basedir)[0],alternate_path)
 else:
     static_basedir = basedir
 
