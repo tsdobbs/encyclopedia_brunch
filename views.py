@@ -27,7 +27,7 @@ def posts(year=None, month=None, day=None, title=None):
         posts = models.post.query.filter(models.post.title == title.replace('_',' ')).filter(extract('year',models.post.date)==year).filter(extract('month',models.post.date)==month).filter(extract('day',models.post.date)==day).all()
         if len(posts) != 0:
             #translate notes from Markdown to HTML. There should only be one post in this case, so here we only translate the first entry in the list
-            posts[0].html_notes = markdown.markdown(posts[0].notes)
+            posts[0].html_notes = markdown.markdown(posts[0].notes, extensions = ['markdown.extensions.sane_lists', 'markdown.extensions.nl2br'])
             return render_template('posts.html', posts=posts)
 
     #Queries for all posts that have a date before the time of query. Anything with a date after the time of query is considered "Scheduled" and isn't displayed
@@ -38,7 +38,7 @@ def posts(year=None, month=None, day=None, title=None):
         date=helpers.format_date_rss(datetime.datetime.utcnow())
         for post in posts:
             post.itunes_date = helpers.format_date_rss(post.date)
-            post.html_notes = markdown.markdown(post.notes)
+            post.html_notes = markdown.markdown(post.notes, extensions = ['markdown.extensions.sane_lists', 'markdown.extensions.nl2br'])
         return Response(render_template('rss.xml', date=date, posts=posts), mimetype='text/xml')
 
     else:
@@ -56,7 +56,7 @@ def posts(year=None, month=None, day=None, title=None):
         numpages = math.ceil(len(posts)/posts_per_page)
         posts = posts[display_start:display_end]
         for post in posts:
-            post.html_notes = markdown.markdown(post.notes)
+            post.html_notes = markdown.markdown(post.notes, extensions = ['markdown.extensions.sane_lists', 'markdown.extensions.nl2br'])
         return render_template('posts.html', posts=posts, numpages=numpages, current_page=current_page)
 
 #Displays the "About The Show" page. Static.
