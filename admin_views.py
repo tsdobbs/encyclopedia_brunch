@@ -53,13 +53,15 @@ class AdminSubmitView(AdminIndexView):
             form.audio_filepath = False
             if form.data['audio_upload_option']:
                 audio_file = request.files['audio_upload']
-                if not audio_file.filename: form.errors['audio_upload'] = 'No file selected!'
-                audio_filepath = os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], secure_filename(audio_file.filename))
-                audio_file.save(audio_filepath)
-                form.audio_filepath = audio_filepath[audio_filepath.find('static')-1:]
-                if form.data['audio_upload_to_ia_option']:
-                    form.audio_filepath = my_helpers.upload_to_ia(audio_filepath, form.data['title'], this_ep_num)
-                    os.remove(audio_filepath)
+                #This line checks if you've actually selected a file for upload.
+                #Currently, if you haven't it continues on and posts the post as a non-show. Might make sense to have it warn the user though.
+                if audio_file.filename:
+                    audio_filepath = os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], secure_filename(audio_file.filename))
+                    audio_file.save(audio_filepath)
+                    form.audio_filepath = audio_filepath[audio_filepath.find('static')-1:]
+                    if form.data['audio_upload_to_ia_option']:
+                        form.audio_filepath = my_helpers.upload_to_ia(audio_filepath, form.data['title'], this_ep_num)
+                        os.remove(audio_filepath)
 
             #Upload image from user if that box is checked, otherwise get from online source
             if (form.image.data and not form.image_upload_option.data) or (form.image_upload.data and form.image_upload_option.data):
