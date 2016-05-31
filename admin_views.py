@@ -4,6 +4,7 @@ from flask_admin import expose, helpers
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from forms import LoginForm, submit_ep_form
+import helpers as my_helpers
 import flask_login as login
 from werkzeug import secure_filename
 import os, requests, datetime
@@ -45,16 +46,20 @@ class AdminSubmitView(AdminIndexView):
                 song['website'] = request.form.getlist('music_website')[song_num]
                 form.song_list.append(models.music(**song))
 
+            # Check what the last episode number was and add one
+            this_ep_num = models.post.query.filter(models.post.show_number).order_by(models.post.show_number).all()[-1].show_number + 1
+
             #Upload audio from user if that box is checked
             form.audio_filepath = False
             if form.data['audio_upload_option']:
                 audio_file = request.files['audio_upload']
+                if not audio_file.filename: form.errors['audio_upload'] = 'No file selected!'
                 audio_filepath = os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], secure_filename(audio_file.filename))
                 audio_file.save(audio_filepath)
                 form.audio_filepath = audio_filepath[audio_filepath.find('static')-1:]
-
-            #Check what the last episode number was and add one
-            this_ep_num = models.post.query.filter(models.post.show_number).order_by(models.post.show_number).all()[-1].show_number + 1
+                if form.data['audio_upload_to_ia_option']:
+                    form.audio_filepath = my_helpers.upload_to_ia(audio_filepath, form.data['title'], this_ep_num)
+                    os.remove(audio_filepath)
 
             #Upload image from user if that box is checked, otherwise get from online source
             if (form.image.data and not form.image_upload_option.data) or (form.image_upload.data and form.image_upload_option.data):

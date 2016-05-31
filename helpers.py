@@ -3,6 +3,7 @@
 import datetime, math
 import requests, json
 import models
+from internetarchive import upload
 from flask import request
 
 #Takes a Python datetime object as input and outputs a string in the preferred format used in RSS feeds.
@@ -76,6 +77,20 @@ def get_image_selection(title):
 				scaled_image_list.append(scaled_image_dict['query']['pages'][page]['imageinfo'][0]['thumburl'])
 
 	return scaled_image_list
+
+#Handles the uploading of a given file to The Internet Archive, including metadata
+#Returns the URL of the newly uploaded file
+def upload_to_ia(audio_filepath, title, this_ep_num):
+	metadata = dict(collection = 'opensource_audio',
+				title = 'EB' + str(int(this_ep_num)) + ' - ' + title,
+				mediatype = 'audio',
+				language = 'eng',
+				description = 'The Encyclopedia Brunch podcast discusses ' + title,
+				subject = [title, 'Encyclopedia Brunch', 'Podcast'],
+				creator = 'T Dobbs, K Cogert',
+				licenseurl = 'http://creativecommons.org/licenses/by-nc-nd/3.0/')
+	r = upload('EB' + str(int(this_ep_num)) + '-' + title, files={metadata['title'] + audio_filepath[audio_filepath.find('.'):] : audio_filepath}, metadata=metadata)
+	return r[0].url
 
 #def process_ep_submission(form):
 	#create new record

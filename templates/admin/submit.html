@@ -25,10 +25,11 @@
         <span style="color: red;">{% for error in form.date.errors %}{{error}}{%endfor%}</span></span>
     </p>
 
-    <p>{{ form.audio_upload_option }} Upload Audio to Server?
+    <p>{{ form.audio_upload_option }} Upload Audio?
         <span style="color: red;">{% for error in form.audio_upload_option.errors %}{{error}}{%endfor%}</span><br>
         <span id="audio_location_inputs">Audio File Location: {{ form.audio_file_location }}</span>
-        <span id="audio_upload_inputs">Upload Audio File: {{ form.audio_upload }}</span>
+        <span id="audio_upload_inputs">{{ form.audio_upload_to_ia_option }} Store Audio on Internet Archive? <br>
+            Upload Audio File: {{ form.audio_upload }}</span>
     </p>
 
     <p> {{ form.image_upload_option }} Upload an Image Instead?<br>
