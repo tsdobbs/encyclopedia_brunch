@@ -28,6 +28,12 @@ class MusicModelView(ModelView):
     def is_accessible(self):
         return login.current_user.is_authenticated
 
+class TaglineModelView(ModelView):
+    column_searchable_list = ['tagline']
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
 # Create customized index view class that handles both login/logout and displays the submit new episode form when already logged-in
 class AdminSubmitView(AdminIndexView):
     # Much of the form validation and processing is done in this view, and it really should be moved into the form definition
@@ -148,3 +154,4 @@ class AdminSubmitView(AdminIndexView):
 admin = Admin(app, name='encyclopedia brunch', template_mode='bootstrap3', index_view=AdminSubmitView(), base_template='admin/logout.html')
 admin.add_view(PostModelView(models.post, db.session))
 admin.add_view(MusicModelView(models.music, db.session))
+admin.add_view(TaglineModelView(models.taglines, db.session))

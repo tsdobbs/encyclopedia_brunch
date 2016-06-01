@@ -48,6 +48,12 @@ class music(db.Model):
     def __repr__(self):
         return '<Artist: %r><Song: %r>' % (self.artist, self.song)
 
+#A repository of all the taglines we use on the show
+#A random one can be selected and displayed underneath the big "Encyclopedia Brunch" banner at the top on each page load
+class taglines(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tagline = db.Column(db.String())
+
 
 # Create user model.
 class User(db.Model):

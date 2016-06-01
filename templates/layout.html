@@ -36,7 +36,7 @@
 								</a>
 							</h1>
 		<div class="site-description accent-text">
-		A weekly fun chat on an eclectic selection of topics<br></div>
+		{% if tagline %}{{tagline}}{% else %}A weekly fun chat on an eclectic selection of topics{% endif %}<br></div>
 
         <!--Navigation block. Banner style for large screens -->
 		<div id="navBlock" role="navigation" style="text-transform:uppercase">

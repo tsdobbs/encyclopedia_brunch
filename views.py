@@ -6,6 +6,7 @@ import helpers
 from flask import render_template, flash, redirect, url_for, request, Response
 from sqlalchemy import desc, extract, sql
 from flask_login import login_required
+import random
 
 #Home page
 #Determines what the latest episode is by querying for all episodes, ordered by ascending show number, then takes the last result
@@ -13,8 +14,10 @@ from flask_login import login_required
 @app.route('/')
 @app.route('/index')
 def index():
+    taglines = models.taglines.query.all()
+    tagline = taglines[random.randint(0,len(taglines)-1)].tagline
     latest = models.post.query.filter(models.post.show_number).filter(models.post.date < datetime.datetime.utcnow()).order_by(models.post.show_number).all()[-1]
-    return render_template('home.html',latest=latest)
+    return render_template('home.html',latest=latest, tagline=tagline)
 
 #Displays posts
 #If /posts is requested, queries for all posts, then paginates into sets of 5
