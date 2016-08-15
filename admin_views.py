@@ -118,6 +118,9 @@ class AdminSubmitView(AdminIndexView):
                     db.session.add(models.music_link(post_id=post_id, music_id=music_id))
                 db.session.commit()
 
+            #ping feedburner so that feedburner feed is up to date
+            requests.get('http://feedburner.google.com/fb/a/pingSubmit?bloglink=http://feeds.feedburner.com/DoomedToFailpodcast')
+
             return redirect(url_for('.preview_view'))
         return self.render('admin/submit.html', form=form)
 
