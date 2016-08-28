@@ -64,7 +64,7 @@ class AdminSubmitView(AdminIndexView):
                 if audio_file.filename:
                     audio_filepath = os.path.join(app.config['AUDIO_UPLOAD_FOLDER'], secure_filename(audio_file.filename))
                     audio_file.save(audio_filepath)
-                    form.audio_filepath = audio_filepath[audio_filepath.find('static')-1:]
+                    form.audio_filepath = audio_filepath[audio_filepath.find('eb')-1:]
                     if form.data['audio_upload_to_ia_option']:
                         form.audio_filepath = my_helpers.upload_to_ia(audio_filepath, form.data['title'], this_ep_num)
                         os.remove(audio_filepath)
@@ -83,7 +83,7 @@ class AdminSubmitView(AdminIndexView):
                     for chunk in image_request.iter_content(100000):
                         image_file.write(chunk)
                     image_file.close()
-                form.image_filepath = image_filepath[image_filepath.find('static')-1:]
+                form.image_filepath = image_filepath[image_filepath.find('eb')-1:]
 
             #prep dict to be added to DB]
             manual_music_list = list()
