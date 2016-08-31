@@ -89,7 +89,7 @@ def upload_to_ia(audio_filepath, title, this_ep_num):
 				subject = [title, 'Encyclopedia Brunch', 'Podcast'],
 				creator = 'T Dobbs, K Cogert',
 				licenseurl = 'http://creativecommons.org/licenses/by-nc-nd/3.0/')
-	r = upload('EB' + str(int(this_ep_num)) + '-' + title, files={metadata['title'] + audio_filepath[audio_filepath.find('.'):] : audio_filepath}, metadata=metadata)
+	r = upload('EB' + str(int(this_ep_num)) + '-' + title.replace(' ','_'), files={metadata['title'] + audio_filepath[audio_filepath.find('.'):] : audio_filepath}, metadata=metadata)
 	return r[0].url
 
 #def process_ep_submission(form):
