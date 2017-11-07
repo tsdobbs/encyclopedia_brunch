@@ -40,8 +40,17 @@
         </span>
     </p>
 
-    <p>Notes (HTML or Markdown):
-        <br>{{ form.notes(rows=10,style="width: 500px;") }}</p>
+    <p><table>
+        <tr>
+            <td>Notes (HTML or Markdown):</td>
+            <td class='notes_preview' style="margin-left: 20px; display: inline-block;">Notes Preview:</td>
+        </tr>
+        <tr>
+            <td>{{ form.notes(rows=10,style="width: 500px;") }}</td>
+            <td class='notes_preview' style="vertical-align: top; outline: #000000 dotted thin; margin-left: 20px; display: inline-block;"><span id="notes_preview"></span></td>
+        </tr>
+    </table></p>
+
     <p><table class = "ep_music">
     <tr>
         <td>Music Artist:</td><td>Music Song:</td><td>Music Website:</td><td class="btn" id="more_music">More</td>
@@ -66,6 +75,11 @@ function make_pics_clickable(){
         $(this).css({opacity: 1})
     });
 };
+
+//Show notes preview
+function show_notes_preview(){
+    $(".notes_preview").show()
+    };
 </script>
 
 <script>
@@ -85,6 +99,8 @@ $(document).ready(function(){
     }
     else{
         $("#image_upload_inputs").hide();
+
+    $(".notes_preview").hide()
     }
 
     //handle hiding and showing elements for checkboxes
@@ -130,10 +146,12 @@ $(document).ready(function(){
         $("#pic_suggestions").load( encodeURI("picsuggest/") + encodeURIComponent(document.getElementById("title").value) , make_pics_clickable);
     });
 
+    //Show processed markdown preview
+    $("#notes").change(function(){
+        $("#notes_preview").load( encodeURI("notes_preview/"), {notes : "test"}, show_notes_preview);
+    });
+
 });
 </script>
 
 {% endblock body %}
-
-<!-- Still need to add:
-A way to upload the show, then have it automatically submit to InternetArchive and note the URL, plus fill in Title info-->

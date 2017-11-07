@@ -18,6 +18,7 @@ def load_user(user_id):
 class PostModelView(ModelView):
     column_searchable_list = ['title', 'notes']
     column_filters = ['title', 'date', 'music']
+    column_default_sort = ('show_number', True)
 
     def is_accessible(self):
         return login.current_user.is_authenticated

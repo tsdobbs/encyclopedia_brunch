@@ -28,7 +28,7 @@
 	<div class = 'row post-footer'>
 		<div class = 'span6'>
 			{%if post.music %}
-			Music by: | {% for music in post.music %} <a href='http://{{music.website}}'>{{music.artist}}</a> | {% endfor %}
+			Music by: | {% for music in post.music %} <a href='{{music.website}}'>{{music.artist}}</a> | {% endfor %}
 			{% endif %}
 		</div>
 		<div class = 'faded-text span2'>

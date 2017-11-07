@@ -1,7 +1,7 @@
 #views.py - Maps URLs to backend functions, then returns the results to the appropriate view
 
 import datetime, math, markdown
-from __init__ import app, db, models
+from __init__ import app, db, models, csrf
 import helpers
 from flask import render_template, flash, redirect, url_for, request, Response
 from sqlalchemy import desc, extract, sql
@@ -76,6 +76,12 @@ def picsuggest(title=None):
     if not title: return ""
     images = helpers.get_image_selection(title)
     return render_template('picsuggest.html', images=images)
+
+@csrf.exempt
+@app.route('/admin/notes_preview/', methods = ('GET', 'POST'))
+@login_required
+def notes_preview():
+    return markdown.markdown(request.args['notes'])
 
 @app.errorhandler(404)
 def page_not_found(e):
